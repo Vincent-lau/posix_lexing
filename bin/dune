@@ -1,12 +1,9 @@
 (executable
  (name main)
  (public_name hello)
- (libraries hello cmdliner))
+ (libraries Lexing))
 
-(rule
- (alias runtest)
- (action
-  (run ./main.exe everybody)))
+
 
 (rule
  (target build.ml)

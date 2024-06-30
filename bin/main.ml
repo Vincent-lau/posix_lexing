@@ -1,30 +1,21 @@
-module C = Cmdliner
+open Lexing
 
-let build =
-  Printf.sprintf "Commit: %s Built on: %s" Build.git_revision Build.build_time
+let _zero_nullable () =
+  let open Match in
+  nullable Zero |> string_of_bool |> print_endline
 
-let help =
-  [
-    `P "These options are common to all commands."
-  ; `S "MORE HELP"
-  ; `P "Use `$(mname) $(i,COMMAND) --help' for help on a single command."
-  ; `S "BUGS"
-  ; `P "Check bug reports at https://github.com/lindig/hello/issues"
-  ; `S "BUILD DETAILS"
-  ; `P build
-  ]
+let _der_a () =
+  let open Match in
+  let r = Star (Sum (Character 'a', Prod (Character 'a', Character 'a'))) in
+  let d = der r 'a' in
+  nullable d |> string_of_bool |> print_endline
 
-let name' =
-  C.Arg.(
-    value & pos 0 string "world"
-    & info [] ~docv:"NAME"
-        ~doc:"Name of person to greet; the default is 'world'.")
+let _val_to_string () =
+  let open Recons in
+  let v = Seq (Char 'a', Left (Char 'b')) in
+  to_string v |> print_endline
 
-let hello =
-  let doc = "Say hello to someone" in
-  let info = C.Cmd.info "hello" ~doc ~man:help in
-  C.Cmd.v info @@ C.Term.(const Hello.hello $ name')
 
-let main () = C.Cmd.eval hello
 
-let () = if !Sys.interactive then () else main () |> exit
+
+(* let () = test_lexer () *)

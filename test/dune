@@ -1,0 +1,4 @@
+(rule
+ (alias runtest)
+ (action
+  (run ./main.exe everybody)))
