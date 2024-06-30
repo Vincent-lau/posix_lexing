@@ -1,4 +1,10 @@
+(executable
+ (name test_lexer)
+ (libraries lexing alcotest))
+
 (rule
  (alias runtest)
+ (deps
+  (:x test_lexer.exe))
  (action
-  (run ./main.exe everybody)))
+  (run %{x})))

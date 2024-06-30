@@ -35,6 +35,6 @@ let rec inj (r : r) (c : char) (v : v) : v =
   | Prod (r1, _r2), c, Seq (v1, v2) -> Seq (inj r1 c v1, v2)
   | Prod (r1, _r2), c, Left (Seq (v1, v2)) -> Seq (inj r1 c v1, v2)
   | Prod (r1, r2), c, Right v2 -> Seq (mkeps r1, inj r2 c v2)
-  | Star r, c, Seq (v, Stars vs) -> Stars (List.map (inj r c) (v :: vs))
-  | Ntimes (_n, r), c, Seq (v, Stars vs) -> Stars (List.map (inj r c) (v :: vs))
+  | Star r, c, Seq (v, Stars vs) -> Stars (inj r c v :: vs)
+  | Ntimes (_n, r), c, Seq (v, Stars vs) -> Stars (inj r c v :: vs)
   | _ -> failwith "invalid injection" (* TODO *)
