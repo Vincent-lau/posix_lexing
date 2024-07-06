@@ -28,6 +28,20 @@ let test_mkeps () =
     "mkeps (1+1a).(a+aa)* = Seq ((Left Empty), (Stars []))" true
     (e = Seq (Left Empty, Stars []))
 
+let test_br_good () =
+  let open Match in
+  let r = Backref (Character 'a', Star (Character 'f'), []) in
+  let c = "aa" in
+  let d = der_s r c in
+  Alcotest.(check bool) "^(a)f*\\1 matches aa" true (nullable d)
+
+let test_br_bad () =
+  let open Match in
+  let r = Backref (Character 'a', Star (Character 'f'), []) in
+  let c = "aafffa" in
+  let d = der_s r c in
+  Alcotest.(check bool) "^(a)f*\\1 does not match aafffa" false (nullable d)
+
 let test_lexer () =
   let open Match in
   let r = Star (Sum (Character 'a', Prod (Character 'a', Character 'a'))) in
@@ -43,4 +57,9 @@ let () =
     ; ("derivative", [ test_case "(a+aa)*\\a derivative" `Quick der_a ])
     ; ("mkeps test", [ test_case "mkeps (1+1a).(a+aa)*" `Quick test_mkeps ])
     ; ("basic_lexing", [ test_case "basic lexing" `Quick test_lexer ])
+    ; ( "basic backref"
+      , [
+          test_case "good br matching" `Quick test_br_good
+        ; test_case "bad br matching" `Quick test_br_bad
+        ] )
     ]

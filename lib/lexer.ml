@@ -1,7 +1,6 @@
 open Recons
 open Match
 
-let explode s = List.init (String.length s) (String.get s)
 
 let rec lexer_rec r = function
   | [] -> if nullable r then Some (mkeps r) else None
